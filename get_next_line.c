@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlorette <jlorette@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/18 13:06:04 by jlorette          #+#    #+#             */
-/*   Updated: 2024/08/19 16:23:25 by jlorette         ###   ########.fr       */
+/*   Created: 2024/08/18 13:06:00 by jlorette          #+#    #+#             */
+/*   Updated: 2024/08/21 22:00:27 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ void	read_and_stock(int fd, t_list **storage)
 		add_storage(storage, buffer, read_return);
 		free(buffer);
 	}
-
 }
 
 void	create_line(t_list *storage, char **line)
@@ -106,10 +105,7 @@ void	create_line(t_list *storage, char **line)
 		while (storage->content[i])
 		{
 			if (storage->content[i] == '\n')
-			{
-				(*line)[j++] = storage->content[i];
 				break ;
-			}
 			(*line)[j++] = storage->content[i++];
 		}
 		storage = storage->next;
@@ -124,24 +120,28 @@ void	reset_storage(t_list **storage)
 	int		i;
 	int		j;
 
-	reset_node = malloc(sizeof(t_list));
-	if (storage == NULL || reset_node == NULL)
+	if (*storage == NULL)
 		return ;
-	reset_node->next = NULL;
 	last_node = search_last_node(*storage);
 	i = 0;
 	while (last_node->content[i] && last_node->content[i] != '\n')
 		i++;
-	if (last_node->content && last_node->content[i] == '\n')
+	if (last_node->content[i] == '\n')
 		i++;
-	reset_node->content = malloc(sizeof(char)
-			* ((ft_strlen(last_node->content) - i) + 1));
-	if (!reset_node->content)
+	reset_node = malloc(sizeof(t_list));
+	if (!reset_node)
 		return ;
+	reset_node->content = malloc(sizeof(char) * (ft_strlen(last_node->content) - i + 1));
+	if (!reset_node->content)
+	{
+		free(reset_node);
+		return ;
+	}
 	j = 0;
-	while (last_node->content)
+	while (last_node->content[i])
 		reset_node->content[j++] = last_node->content[i++];
 	reset_node->content[j] = '\0';
+	reset_node->next = NULL;
 	free_storage(*storage);
-	*storage = reset_storage;
+	*storage = reset_node;
 }

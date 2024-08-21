@@ -1,0 +1,6 @@
+.vscode
+.DS_Store
+*.o
+get_next_line.a
+main
+main.dSYM

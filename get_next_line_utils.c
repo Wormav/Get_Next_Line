@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlorette <jlorette@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/18 13:18:07 by jlorette          #+#    #+#             */
-/*   Updated: 2024/08/19 15:09:11 by jlorette         ###   ########.fr       */
+/*   Created: 2024/08/18 13:15:34 by jlorette          #+#    #+#             */
+/*   Updated: 2024/08/21 21:21:15 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	alloc_line(char **line, t_list *storage)
 	int	i;
 	int	len;
 
+	len = 0;
 	while (storage)
 	{
 		i = 0;
