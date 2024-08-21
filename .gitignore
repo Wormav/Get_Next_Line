@@ -2,5 +2,5 @@
 .DS_Store
 *.o
 get_next_line.a
-main
+Get_Next_Line
 main.dSYM
