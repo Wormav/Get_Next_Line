@@ -6,7 +6,7 @@
 /*   By: jlorette <jlorette@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 13:26:24 by jlorette          #+#    #+#             */
-/*   Updated: 2024/08/21 21:53:39 by jlorette         ###   ########.fr       */
+/*   Updated: 2024/08/22 13:26:34 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main()
 	while (s)
     {
         s = get_next_line(fd);
-        printf("[%s\n]", s);
+        printf("%s\n", s);
         free(s);
     }
     close(fd);
