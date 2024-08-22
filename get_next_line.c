@@ -6,7 +6,7 @@
 /*   By: jlorette <jlorette@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 13:06:00 by jlorette          #+#    #+#             */
-/*   Updated: 2024/08/22 14:46:04 by jlorette         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:20:19 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,26 +87,28 @@ void	read_and_stock(int fd, t_list **storage)
 	}
 }
 
-void	create_line(t_list *storage, char **line)
+void create_line(t_list *storage, char **line)
 {
-	int	i;
-	int	j;
+	int i;
+	int j;
 
 	if (!storage)
-		return ;
+		return;
 	alloc_line(line, storage);
 	if (!*line)
-		return ;
+		return;
 	j = 0;
 	while (storage)
 	{
 		i = 0;
 		while (storage->content[i])
 		{
-			if (storage->content[i] == '\n')
-				break ;
 			(*line)[j++] = storage->content[i++];
+			if (storage->content[i - 1] == '\n')
+				break;
 		}
+		if (storage->content[i - 1] == '\n')
+			break;
 		storage = storage->next;
 	}
 	(*line)[j] = '\0';
