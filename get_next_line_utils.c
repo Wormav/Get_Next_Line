@@ -6,7 +6,7 @@
 /*   By: jlorette <jlorette@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 13:15:34 by jlorette          #+#    #+#             */
-/*   Updated: 2024/08/22 18:14:17 by jlorette         ###   ########.fr       */
+/*   Updated: 2024/08/22 23:53:47 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,21 @@ void	alloc_line(char **line, t_list *storage)
 	*line = malloc(sizeof(char) * (len + 1));
 }
 
-int	ft_strlen(const char *str)
+char	*copy_content_after_newline(char *content, int start)
 {
-	int	i;
+	char	*new_content;
+	int		length;
+	int		i;
 
+	length = 0;
+	while (content[start + length])
+		length++;
+	new_content = malloc(sizeof(char) * (length + 1));
+	if (!new_content)
+		return (NULL);
 	i = 0;
-	while (str[i])
-		i++;
-	return (i);
+	while (content[start])
+		new_content[i++] = content[start++];
+	new_content[i] = '\0';
+	return (new_content);
 }

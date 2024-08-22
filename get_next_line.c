@@ -6,7 +6,7 @@
 /*   By: jlorette <jlorette@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 13:06:00 by jlorette          #+#    #+#             */
-/*   Updated: 2024/08/22 18:20:19 by jlorette         ###   ########.fr       */
+/*   Updated: 2024/08/22 23:57:08 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,16 +87,16 @@ void	read_and_stock(int fd, t_list **storage)
 	}
 }
 
-void create_line(t_list *storage, char **line)
+void	create_line(t_list *storage, char **line)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	if (!storage)
-		return;
+		return ;
 	alloc_line(line, storage);
 	if (!*line)
-		return;
+		return ;
 	j = 0;
 	while (storage)
 	{
@@ -105,45 +105,38 @@ void create_line(t_list *storage, char **line)
 		{
 			(*line)[j++] = storage->content[i++];
 			if (storage->content[i - 1] == '\n')
-				break;
+				break ;
 		}
 		if (storage->content[i - 1] == '\n')
-			break;
+			break ;
 		storage = storage->next;
 	}
 	(*line)[j] = '\0';
 }
 
-void reset_storage(t_list **storage)
+void	reset_storage(t_list **storage)
 {
-	t_list *last_node;
-	t_list *reset_node;
-	int i;
-	int j;
-	int length;
+	t_list	*last_node;
+	t_list	*reset_node;
+	int		i;
 
 	if (*storage == NULL)
-		return;
+		return ;
 	last_node = search_last_node(*storage);
 	i = 0;
 	while (last_node->content[i] && last_node->content[i] != '\n')
 		i++;
 	if (last_node->content[i] == '\n')
 		i++;
-	length = ft_strlen(last_node->content + i);
 	reset_node = malloc(sizeof(t_list));
 	if (!reset_node)
-		return;
-	reset_node->content = malloc(sizeof(char) * (length + 1));
+		return ;
+	reset_node->content = copy_content_after_newline(last_node->content, i);
 	if (!reset_node->content)
 	{
 		free(reset_node);
-		return;
+		return ;
 	}
-	j = 0;
-	while (last_node->content[i])
-		reset_node->content[j++] = last_node->content[i++];
-	reset_node->content[j] = '\0';
 	reset_node->next = NULL;
 	free_storage(*storage);
 	*storage = reset_node;
