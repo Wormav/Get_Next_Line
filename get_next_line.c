@@ -6,7 +6,7 @@
 /*   By: jlorette <jlorette@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 13:06:00 by jlorette          #+#    #+#             */
-/*   Updated: 2024/08/22 14:19:16 by jlorette         ###   ########.fr       */
+/*   Updated: 2024/08/22 14:46:04 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,51 +117,32 @@ void reset_storage(t_list **storage)
 	t_list *last_node;
 	t_list *reset_node;
 	int i;
+	int j;
 	int length;
 
-	// Vérifie si la liste est vide
 	if (*storage == NULL)
 		return;
-
-	// Trouve le dernier nœud de la liste
 	last_node = search_last_node(*storage);
-
-	// Trouve l'index du caractère '\n'
 	i = 0;
 	while (last_node->content[i] && last_node->content[i] != '\n')
 		i++;
-
-	// Si le caractère '\n' est trouvé, passe à l'index suivant
 	if (last_node->content[i] == '\n')
 		i++;
-
-	// Calcule la longueur du nouveau contenu après '\n'
-	length = ft_strlen(last_node->content) - i;
-
-	// Alloue de la mémoire pour le nouveau nœud
+	length = ft_strlen(last_node->content + i);
 	reset_node = malloc(sizeof(t_list));
 	if (!reset_node)
 		return;
-
-	// Alloue de la mémoire pour le contenu du nouveau nœud
 	reset_node->content = malloc(sizeof(char) * (length + 1));
 	if (!reset_node->content)
 	{
 		free(reset_node);
 		return;
 	}
-
-	// Copie le contenu après '\n' dans le nouveau nœud
-	for (int j = 0; j < length; j++)
-		reset_node->content[j] = last_node->content[i + j];
-	reset_node->content[length] = '\0'; // Ajoute le caractère de fin de chaîne
-
-	// Initialise le pointeur 'next' du nouveau nœud
+	j = 0;
+	while (last_node->content[i])
+		reset_node->content[j++] = last_node->content[i++];
+	reset_node->content[j] = '\0';
 	reset_node->next = NULL;
-
-	// Libère la mémoire de la liste originale
 	free_storage(*storage);
-
-	// Met à jour le pointeur 'storage' avec le nouveau nœud
 	*storage = reset_node;
 }
