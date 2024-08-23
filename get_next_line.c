@@ -6,7 +6,7 @@
 /*   By: jlorette <jlorette@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 13:06:00 by jlorette          #+#    #+#             */
-/*   Updated: 2024/08/22 23:57:08 by jlorette         ###   ########.fr       */
+/*   Updated: 2024/08/23 18:12:23 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ void	create_line(t_list *storage, char **line)
 	int	i;
 	int	j;
 
+	*line = NULL;
 	if (!storage)
 		return ;
 	alloc_line(line, storage);
@@ -103,11 +104,12 @@ void	create_line(t_list *storage, char **line)
 		i = 0;
 		while (storage->content[i])
 		{
-			(*line)[j++] = storage->content[i++];
-			if (storage->content[i - 1] == '\n')
+			(*line)[j++] = storage->content[i];
+			if (storage->content[i] == '\n')
 				break ;
+			i++;
 		}
-		if (storage->content[i - 1] == '\n')
+		if (storage->content[i] == '\n')
 			break ;
 		storage = storage->next;
 	}
