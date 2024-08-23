@@ -1,0 +1,3 @@
+test du fichier 2
+avec
+trois lignes.

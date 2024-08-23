@@ -6,7 +6,7 @@
 /*   By: jlorette <jlorette@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 12:50:53 by jlorette          #+#    #+#             */
-/*   Updated: 2024/08/23 12:40:17 by jlorette         ###   ########.fr       */
+/*   Updated: 2024/08/23 16:20:40 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,21 @@
 #  define BUFFER_SIZE 42
 # endif
 
+# ifndef FD_SETSIZE
+#  define FD_SETSIZE 1024
+# endif
+
 typedef struct s_list
 {
 	char			*content;
 	struct s_list	*next;
-}					t_list;
+}				t_list;
+
+typedef struct s_fd_storage
+{
+	int		fd;
+	t_list	*storage;
+}				t_fd_storage;
 
 void	add_storage(t_list **storage, char *buffer, int read_return);
 void	alloc_line(char **line, t_list *storage);

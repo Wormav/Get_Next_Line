@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlorette <jlorette@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 13:06:00 by jlorette          #+#    #+#             */
-/*   Updated: 2024/08/23 12:55:15 by jlorette         ###   ########.fr       */
+/*   Updated: 2024/08/23 16:30:59 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,30 @@
 
 char	*get_next_line(int fd)
 {
-	static t_list	*storage;
-	char			*line;
+	static t_fd_storage	storages[FD_SETSIZE];
+	char				*line;
+	int					i;
 
+	i = 0;
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &line, 0) < 0)
 		return (NULL);
-	line = NULL;
-	read_and_stock(fd, &storage);
-	if (!storage)
+	while (i < FD_SETSIZE && storages[i].fd && storages[i].fd != fd)
+		i++;
+	if (i == FD_SETSIZE)
 		return (NULL);
-	create_line(storage, &line);
-	reset_storage(&storage);
-	if (line[0] == '\0')
-	{
-		free_storage(storage);
-		storage = NULL;
-		free(line);
+	if (storages[i].fd == 0)
+		storages[i].fd = fd;
+	read_and_stock(fd, &storages[i].storage);
+	create_line(storages[i].storage, &line);
+	if (!storages[i].storage || !line)
 		return (NULL);
-	}
-	return (line);
+	reset_storage(&storages[i].storage);
+	if (line[0] != '\0')
+		return (line);
+	free_storage(storages[i].storage);
+	storages[i].storage = NULL;
+	free(line);
+	return (NULL);
 }
 
 void	add_storage(t_list **storage, char *buffer, int read_return)
@@ -92,6 +97,7 @@ void	create_line(t_list *storage, char **line)
 	int	i;
 	int	j;
 
+	*line = NULL;
 	if (!storage)
 		return ;
 	alloc_line(line, storage);
