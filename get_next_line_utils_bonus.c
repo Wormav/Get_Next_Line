@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlorette <jlorette@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: jlorette <jlorette@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/18 13:15:34 by jlorette          #+#    #+#             */
-/*   Updated: 2024/08/23 18:15:10 by jlorette         ###   ########.fr       */
+/*   Created: 2024/08/23 18:13:13 by jlorette          #+#    #+#             */
+/*   Updated: 2024/10/14 15:46:01 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

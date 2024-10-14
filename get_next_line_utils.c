@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlorette <jlorette@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: jlorette <jlorette@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/18 13:15:34 by jlorette          #+#    #+#             */
-/*   Updated: 2024/08/22 23:53:47 by jlorette         ###   ########.fr       */
+/*   Created: 2024/10/14 12:31:39 by jlorette          #+#    #+#             */
+/*   Updated: 2024/10/14 15:19:12 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,11 @@ void	alloc_line(char **line, t_list *storage)
 		storage = storage->next;
 	}
 	*line = malloc(sizeof(char) * (len + 1));
+	if (!*line)
+		return ;
 }
 
-char	*copy_content_after_newline(char *content, int start)
+char	*copy_content_after_newline(const char *content, int start)
 {
 	char	*new_content;
 	int		length;
