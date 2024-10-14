@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlorette <jlorette@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: jlorette <jlorette@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 12:50:53 by jlorette          #+#    #+#             */
-/*   Updated: 2024/08/23 16:20:40 by jlorette         ###   ########.fr       */
+/*   Updated: 2024/10/14 15:43:53 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,10 @@ typedef struct s_fd_storage
 	t_list	*storage;
 }				t_fd_storage;
 
-void	add_storage(t_list **storage, char *buffer, int read_return);
 void	alloc_line(char **line, t_list *storage);
 char	*copy_content_after_newline(char *content, int start);
-void	create_line(t_list *storage, char **line);
 void	free_storage(t_list *storage);
 char	*get_next_line(int fd);
-void	read_and_stock(int fd, t_list **storage);
-void	reset_storage(t_list **storage);
 int		search_new_line(t_list *storage);
 t_list	*search_last_node(t_list *storage);
 

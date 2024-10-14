@@ -3,39 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlorette <jlorette@42angouleme.fr>         +#+  +:+       +#+        */
+/*   By: jlorette <jlorette@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/18 13:06:00 by jlorette          #+#    #+#             */
-/*   Updated: 2024/08/23 18:13:51 by jlorette         ###   ########.fr       */
+/*   Created: 2024/10/14 12:39:58 by jlorette          #+#    #+#             */
+/*   Updated: 2024/10/14 15:45:36 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*get_next_line(int fd)
-{
-	static t_list	*storage;
-	char			*line;
-
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &line, 0) < 0)
-		return (NULL);
-	line = NULL;
-	read_and_stock(fd, &storage);
-	if (!storage)
-		return (NULL);
-	create_line(storage, &line);
-	reset_storage(&storage);
-	if (line[0] == '\0')
-	{
-		free_storage(storage);
-		storage = NULL;
-		free(line);
-		return (NULL);
-	}
-	return (line);
-}
-
-void	add_storage(t_list **storage, char *buffer, int read_return)
+static void	add_storage(t_list **storage, const char *buffer, int read_return)
 {
 	t_list	*new_node;
 	t_list	*last_node;
@@ -64,7 +41,7 @@ void	add_storage(t_list **storage, char *buffer, int read_return)
 	last_node ->next = new_node;
 }
 
-void	read_and_stock(int fd, t_list **storage)
+static void	read_and_stock(int fd, t_list **storage)
 {
 	char	*buffer;
 	int		read_return;
@@ -87,7 +64,7 @@ void	read_and_stock(int fd, t_list **storage)
 	}
 }
 
-void	create_line(t_list *storage, char **line)
+static void	create_line(t_list *storage, char **line)
 {
 	int	i;
 	int	j;
@@ -116,7 +93,7 @@ void	create_line(t_list *storage, char **line)
 	(*line)[j] = '\0';
 }
 
-void	reset_storage(t_list **storage)
+static void	reset_storage(t_list **storage)
 {
 	t_list	*last_node;
 	t_list	*reset_node;
@@ -142,4 +119,30 @@ void	reset_storage(t_list **storage)
 	reset_node->next = NULL;
 	free_storage(*storage);
 	*storage = reset_node;
+}
+
+char	*get_next_line(int fd)
+{
+	static t_list	*storage;
+	char			*line;
+
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &line, 0) < 0)
+	{
+		storage = NULL;
+		return (NULL);
+	}
+	line = NULL;
+	read_and_stock(fd, &storage);
+	if (!storage)
+		return (NULL);
+	create_line(storage, &line);
+	reset_storage(&storage);
+	if (line[0] == '\0')
+	{
+		free_storage(storage);
+		storage = NULL;
+		free(line);
+		return (NULL);
+	}
+	return (line);
 }
