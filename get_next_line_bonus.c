@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlorette <jlorette@student.42angouleme.f>  +#+  +:+       +#+        */
+/*   By: jlorette <jlorette@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:13:13 by jlorette          #+#    #+#             */
-/*   Updated: 2024/10/14 15:45:48 by jlorette         ###   ########.fr       */
+/*   Updated: 2024/10/21 10:27:35 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ static void	read_and_stock(int fd, t_list **storage)
 		if (!buffer)
 			return ;
 		read_return = (int)read(fd, buffer, BUFFER_SIZE);
+		if (read_return == -1)
+		{
+			free_storage(*storage);
+			*storage = NULL;
+		}
 		if ((*storage == NULL && read_return == 0) || read_return == -1)
 		{
 			free(buffer);
@@ -128,7 +133,7 @@ char	*get_next_line(int fd)
 	int					i;
 
 	i = 0;
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &line, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	while (i < FD_SETSIZE && storages[i].fd && storages[i].fd != fd)
 		i++;

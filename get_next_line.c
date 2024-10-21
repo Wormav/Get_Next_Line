@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlorette <jlorette@student.42angouleme.f>  +#+  +:+       +#+        */
+/*   By: jlorette <jlorette@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 12:39:58 by jlorette          #+#    #+#             */
-/*   Updated: 2024/10/14 15:45:36 by jlorette         ###   ########.fr       */
+/*   Updated: 2024/10/21 10:17:49 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ static void	read_and_stock(int fd, t_list **storage)
 		if (!buffer)
 			return ;
 		read_return = (int)read(fd, buffer, BUFFER_SIZE);
+		if (read_return == -1)
+		{
+			free_storage(*storage);
+			*storage = NULL;
+		}
 		if ((*storage == NULL && read_return == 0) || read_return == -1)
 		{
 			free(buffer);
@@ -126,15 +131,17 @@ char	*get_next_line(int fd)
 	static t_list	*storage;
 	char			*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &line, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 	{
 		storage = NULL;
 		return (NULL);
 	}
-	line = NULL;
 	read_and_stock(fd, &storage);
 	if (!storage)
+	{
+		free_storage(storage);
 		return (NULL);
+	}
 	create_line(storage, &line);
 	reset_storage(&storage);
 	if (line[0] == '\0')
