@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlorette <jlorette@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: jlorette <jlorette@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:13:13 by jlorette          #+#    #+#             */
-/*   Updated: 2024/10/21 10:27:35 by jlorette         ###   ########.fr       */
+/*   Updated: 2024/12/04 15:36:17 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	add_storage(t_list **storage, char *buffer, int read_return)
 {
 	t_list	*new_node;
-	t_list	*last_node;
+	t_list	*last;
 	int		i;
 
 	new_node = malloc(sizeof(t_list));
@@ -37,8 +37,8 @@ static void	add_storage(t_list **storage, char *buffer, int read_return)
 		*storage = new_node;
 		return ;
 	}
-	last_node = search_last_node(*storage);
-	last_node ->next = new_node;
+	last = last_node(*storage);
+	last ->next = new_node;
 }
 
 static void	read_and_stock(int fd, t_list **storage)
@@ -98,24 +98,23 @@ static void	create_line(t_list *storage, char **line)
 	(*line)[j] = '\0';
 }
 
-static void	reset_storage(t_list **storage)
+static void	reset_storage(t_list **storage, int fd)
 {
-	t_list	*last_node;
 	t_list	*reset_node;
 	int		i;
 
 	if (*storage == NULL)
 		return ;
-	last_node = search_last_node(*storage);
 	i = 0;
-	while (last_node->content[i] && last_node->content[i] != '\n')
+	while (last_node(*storage)->content[i]
+		&& last_node(*storage)->content[i] != '\n')
 		i++;
-	if (last_node->content[i] == '\n')
+	if (last_node(*storage)->content[i] == '\n')
 		i++;
 	reset_node = malloc(sizeof(t_list));
 	if (!reset_node)
 		return ;
-	reset_node->content = copy_content_after_newline(last_node->content, i);
+	reset_node->content = copy_after_newline(last_node(*storage)->content, i);
 	if (!reset_node->content)
 	{
 		free(reset_node);
@@ -123,6 +122,8 @@ static void	reset_storage(t_list **storage)
 	}
 	reset_node->next = NULL;
 	free_storage(*storage);
+	if (fd == 0)
+		free_storage(reset_node);
 	*storage = reset_node;
 }
 
@@ -145,7 +146,7 @@ char	*get_next_line(int fd)
 	create_line(storages[i].storage, &line);
 	if (!storages[i].storage || !line)
 		return (NULL);
-	reset_storage(&storages[i].storage);
+	reset_storage(&storages[i].storage, fd);
 	if (line[0] != '\0')
 		return (line);
 	free_storage(storages[i].storage);

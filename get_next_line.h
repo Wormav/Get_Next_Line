@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlorette <jlorette@student.42angouleme.f>  +#+  +:+       +#+        */
+/*   By: jlorette <jlorette@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 12:31:39 by jlorette          #+#    #+#             */
-/*   Updated: 2024/10/14 15:30:59 by jlorette         ###   ########.fr       */
+/*   Updated: 2024/12/04 14:53:06 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ typedef struct s_list
 }					t_list;
 
 void	alloc_line(char **line, t_list *storage);
-char	*copy_content_after_newline(const char *content, int start);
+char	*copy_after_newline(const char *content, int start);
 void	free_storage(t_list *storage);
 char	*get_next_line(int fd);
 int		search_new_line(t_list *storage);
-t_list	*search_last_node(t_list *storage);
+t_list	*last_node(t_list *storage);
 
 #endif

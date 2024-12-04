@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlorette <jlorette@student.42angouleme.f>  +#+  +:+       +#+        */
+/*   By: jlorette <jlorette@42angouleme.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 12:31:39 by jlorette          #+#    #+#             */
-/*   Updated: 2024/10/16 23:09:52 by jlorette         ###   ########.fr       */
+/*   Updated: 2024/12/04 14:52:34 by jlorette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	search_new_line(t_list *storage)
 	return (0);
 }
 
-t_list	*search_last_node(t_list *storage)
+t_list	*last_node(t_list *storage)
 {
 	t_list	*current;
 
@@ -80,7 +80,7 @@ void	alloc_line(char **line, t_list *storage)
 		return ;
 }
 
-char	*copy_content_after_newline(const char *content, int start)
+char	*copy_after_newline(const char *content, int start)
 {
 	char	*new_content;
 	int		length;
